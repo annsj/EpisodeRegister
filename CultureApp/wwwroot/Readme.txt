@@ -1,0 +1,1 @@
+﻿Scaffold-DBContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Culture;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models" -Context "CultureContext" -Force

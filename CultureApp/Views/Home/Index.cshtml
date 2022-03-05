@@ -1,0 +1,121 @@
+﻿@model TvShow;
+@using System.Linq;
+@using System.Collections.Generic;
+
+@{
+    ViewData["Title"] = "TV-serier";
+    SelectList titleList = new SelectList((List<string>)ViewData["Titles"]);
+    TvShow selectedShow = (TvShow)ViewData["SelectedShow"];
+}
+
+<div class="text-center py-2">
+    <h1>TV-serier</h1>
+</div>
+
+<div class="row float-none">
+
+    <div class=" col">
+        @if (ViewData["SelectedShow"] == null)
+        {
+            <h4 class="pb-3">Lägg till serie</h4>
+            <form method="post">
+                <div class="form-group">
+                    @*<label asp-for="Title"></label>*@
+                    <input name="NewTitle" class="form-control" placeholder="Skriv titel" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold" asp-for="Season"></label>
+                    <input asp-for="Season" value="1" class="form-control" />
+                    <span asp-validation-for="Season" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Episode"></label>
+                    <input asp-for="Episode" value="0" class="form-control" />
+                    <span asp-validation-for="Episode" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-outline-secondary" value="Spara" />
+                    <a href="/Home/Index" class="btn btn-outline-secondary">Ångra</a>
+                </div>
+            </form>
+
+
+        }
+    </div>
+
+    <div class=" col">
+        <h4 class="pb-3">Lägg till avsnitt</h4>
+
+        @if (ViewData["SelectedShow"] == null)
+        {
+            <form method="post">
+                <div class="form-group">
+                    @*<label asp-for="Title"></label>*@
+                    <select name="SelectedTitle" asp-items="titleList" class="form-control">
+                        <option value="">Välj titel</option>
+                    </select>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-outline-secondary" value="Välj" />
+                </div>
+            </form>
+        }
+
+
+        @if (ViewData["SelectedShow"] != null)
+        {
+
+            <form method="post">
+                <div class="form-group">
+                    <input asp-for="Title" value="@selectedShow.Title" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Season"></label>
+                    <input asp-for="Season" value="@selectedShow.Season" class="form-control" />
+                    <span asp-validation-for="Season" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Episode"></label>
+                    <input asp-for="Episode" value="@selectedShow.Episode" class="form-control" />
+                    <span asp-validation-for="Episode" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-outline-secondary" value="Spara" />
+                    <a href="/Home/Index" class="btn btn-outline-secondary">Ångra</a>
+                </div>
+            </form>
+
+        }
+    </div>
+
+    <div class="col">
+        <h4 class="pb-3">Avslutade avsnitt</h4>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Season)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Episode)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var show in (List<TvShow>)ViewData["TvShows"])
+                {
+                    <tr>
+                        <td style="white-space: nowrap">@show.Title</td>
+                        <td>@show.Season</td>
+                        <td>@show.Episode</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
